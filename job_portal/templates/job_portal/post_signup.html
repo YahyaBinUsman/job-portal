@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Choose Role</title>
+    <style>
+        /* Internal CSS with Ruby Red and Crystal Blue */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .card {
+            display: inline-block;
+            width: 200px;
+            padding: 20px;
+            margin: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            background-color: #f0f8ff;
+            text-decoration: none; /* Remove underline from links */
+            color: #000; /* Default text color */
+        }
+        .card h3 {
+            color: #d32f2f; /* Ruby Red */
+        }
+        .card:hover {
+            background-color: #e0f7fa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Choose Your Role</h2>
+        <a href="{% url 'job_finder_dashboard' %}" class="card">
+            <h3>Job Finder</h3>
+        </a>
+        <a href="{% url 'employer_dashboard' %}" class="card">
+            <h3>Employer</h3>
+        </a>
+    </div>
+</body>
+</html>
