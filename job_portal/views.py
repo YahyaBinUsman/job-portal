@@ -44,6 +44,8 @@ def post_signup(request):
     return render(request, 'job_portal/post_signup.html')
 
 from .forms import JobFinderProfileForm, EmployerProfileForm
+from django.shortcuts import render, redirect
+from .forms import JobFinderProfileForm, EmployerProfileForm
 
 def job_finder_dashboard(request):
     if request.method == 'POST':
@@ -68,6 +70,7 @@ def employer_dashboard(request):
     else:
         form = EmployerProfileForm()
     return render(request, 'job_portal/employer_dashboard.html', {'form': form})
+
 
 from .forms import MessageForm
 from .models import Message

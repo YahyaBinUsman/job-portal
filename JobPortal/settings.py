@@ -77,10 +77,15 @@ WSGI_APPLICATION = 'JobPortal.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'job portal',  # Replace with your database name
+        'USER': 'root',  # Replace with your MySQL username
+        'PASSWORD': '',  # Replace with your MySQL password
+        'HOST': 'localhost',  # Assuming MySQL is on the same machine
+        'PORT': '3306',  # MySQL default port
     }
 }
+
 
 
 # Password validation

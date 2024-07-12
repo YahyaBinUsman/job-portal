@@ -4,13 +4,36 @@ from django.db import models
 class CustomUser(AbstractUser):
     is_job_finder = models.BooleanField(default=False)
     is_employer = models.BooleanField(default=False)
+from django.db import models
+from django.contrib.auth.models import AbstractUser
+
+
+
 class JobFinderProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    # Add additional fields for job finder profile
+    full_name = models.CharField(max_length=100, blank=True, null=True)
+    bio = models.TextField(blank=True, null=True)
+    experience = models.PositiveIntegerField(blank=True, null=True)
+    skills = models.CharField(max_length=200, blank=True, null=True)
+    education = models.CharField(max_length=200, blank=True, null=True)
+    location = models.CharField(max_length=100, blank=True, null=True)
+    contact_email = models.EmailField(blank=True, null=True)
+    contact_phone = models.CharField(max_length=15, blank=True, null=True)
+    linkedin_profile = models.URLField(blank=True, null=True)
+    portfolio_url = models.URLField(blank=True, null=True)
 
 class EmployerProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    # Add additional fields for employer profile
+    company_name = models.CharField(max_length=100, blank=True, null=True)
+    company_description = models.TextField(blank=True, null=True,default=None)
+    industry = models.CharField(max_length=100, blank=True, null=True)
+    company_location = models.CharField(max_length=100, blank=True, null=True)
+    contact_email = models.EmailField(blank=True, null=True)
+    contact_phone = models.CharField(max_length=15, blank=True, null=True)
+    company_website = models.URLField(blank=True, null=True)
+    linkedin_profile = models.URLField(blank=True, null=True)
+    number_of_employees = models.PositiveIntegerField(blank=True, null=True)
+    established_year = models.PositiveIntegerField(blank=True, null=True)
 
 class Message(models.Model):
     sender = models.ForeignKey(CustomUser, related_name='sent_messages', on_delete=models.CASCADE)
