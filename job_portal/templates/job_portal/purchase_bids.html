@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Job Finder Dashboard</title>
+    <title>Purchase Bids</title>
     <style>
         /* Internal CSS with Ruby Red and Crystal Blue */
         body {
@@ -9,7 +9,7 @@
             background-color: #f0f8ff;
         }
         .container {
-            max-width: 1000px;
+            max-width: 600px;
             margin: 50px auto;
             padding: 20px;
             background-color: #fff;
@@ -19,9 +19,6 @@
         }
         h2 {
             color: #d32f2f; /* Ruby Red */
-        }
-        p {
-            color: #1976d2; /* Crystal Blue */
         }
         .form-group {
             margin-bottom: 15px;
@@ -49,13 +46,12 @@
 </head>
 <body>
     <div class="container">
-        <h2>Job Finder Dashboard</h2>
-        <p>Welcome, {{ request.user.username }}!</p>
+        <h2>Purchase Bids</h2>
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
             <div class="form-group">
-                <input type="submit" value="Save Profile">
+                <input type="submit" value="Purchase Bids">
             </div>
         </form>
     </div>

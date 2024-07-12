@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Messages</title>
+    <style>
+        /* Internal CSS with Ruby Red and Crystal Blue */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #d32f2f; /* Ruby Red */
+        }
+        .messages {
+            margin-top: 20px;
+        }
+        .message {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        .message p {
+            margin: 0;
+            color: #1976d2; /* Crystal Blue */
+        }
+        .message .timestamp {
+            font-size: 0.8em;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Messages</h2>
+        <div class="messages">
+            <h3>Sent Messages</h3>
+            {% for message in messages_sent %}
+            <div class="message">
+                <p>To: {{ message.receiver.username }}</p>
+                <p>{{ message.content }}</p>
+                <p class="timestamp">{{ message.timestamp }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="messages">
+            <h3>Received Messages</h3>
+            {% for message in messages_received %}
+            <div class="message">
+                <p>From: {{ message.sender.username }}</p>
+                <p>{{ message.content }}</p>
+                <p class="timestamp">{{ message.timestamp }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
