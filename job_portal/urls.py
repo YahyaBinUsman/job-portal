@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import signup, user_login, home, post_signup, job_finder_dashboard, employer_dashboard, send_message, view_messages,create_job_post, list_jobs,purchase_bids
-from .views import apply_to_job, manage_applications, approve_application, reject_application,messaging,notifications,hire_job_finder,job_finder_profile
+from .views import fetch_messages,apply_to_job, manage_applications, approve_application, reject_application,messaging,notifications,hire_job_finder,job_finder_profile
 
 urlpatterns = [
     path('signup/', signup, name='signup'),
@@ -19,10 +19,12 @@ urlpatterns = [
     path('approve_application/<int:application_id>/', approve_application, name='approve_application'),
     path('reject_application/<int:application_id>/', reject_application, name='reject_application'),
     path('messaging/', messaging, name='messaging'),
-    path('send_message/<int:receiver_id>/', send_message, name='send_message'),
+    path('send_message/', send_message, name='send_message'),
     path('notifications/', notifications, name='notifications'),
     path('hire_job_finder/<int:job_finder_id>/', hire_job_finder, name='hire_job_finder'),
     path('job_finder_profile/<int:job_finder_id>/', job_finder_profile, name='job_finder_profile'),
+        path('fetch_messages/', fetch_messages, name='fetch_messages'),
+
 
 
 ]

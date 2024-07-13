@@ -93,13 +93,15 @@ def employer_dashboard(request):
         'applications': applications,
     })
 
-
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 def messaging(request):
     friends = request.user.friends.friends.all()
     current_friend = None
     if friends:
-        current_friend = friends[0]  # Default to the first friend or handle this logic as needed
+        current_friend = friends[0]
     friend_messages = {friend: Message.objects.filter(
         (Q(sender=request.user) & Q(receiver=friend)) |
         (Q(sender=friend) & Q(receiver=request.user))
@@ -110,21 +112,17 @@ def messaging(request):
         'notifications': Notification.objects.filter(user=request.user).order_by('-timestamp')
     })
 
-
-# Send Message view
-def send_message(request, receiver_id):
-    receiver = CustomUser.objects.get(id=receiver_id)
+@csrf_exempt
+def send_message(request):
     if request.method == 'POST':
-        form = MessageForm(request.POST)
-        if form.is_valid():
-            message = form.save(commit=False)
-            message.sender = request.user
-            message.receiver = receiver
-            message.save()
-            return redirect('messaging')
-    else:
-        form = MessageForm()
-    return render(request, 'job_portal/send_message.html', {'form': form, 'receiver': receiver})
+        receiver_id = request.POST.get('receiver_id')
+        content = request.POST.get('content')
+        receiver = CustomUser.objects.get(id=receiver_id)
+        message = Message(sender=request.user, receiver=receiver, content=content)
+        message.save()
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'}, status=400)
+
 
 from django.shortcuts import render
 from .models import Notification
@@ -249,3 +247,24 @@ def job_finder_profile(request, job_finder_id):
     job_finder = CustomUser.objects.get(id=job_finder_id)
     profile = JobFinderProfile.objects.get(user=job_finder)
     return render(request, 'job_portal/job_finder_profile.html', {'profile': profile})
+
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from .models import Message, CustomUser
+
+@login_required
+def fetch_messages(request):
+    friend_id = request.GET.get('friend_id')
+    friend = CustomUser.objects.get(id=friend_id)
+    messages = Message.objects.filter(sender=request.user, receiver=friend) | Message.objects.filter(sender=friend, receiver=request.user)
+    messages = messages.order_by('timestamp')
+
+    messages_list = []
+    for message in messages:
+        messages_list.append({
+            'content': message.content,
+            'sender': message.sender.id,
+            'timestamp': message.timestamp.strftime('%Y-%m-%d %H:%M:%S')
+        })
+
+    return JsonResponse({'status': 'success', 'messages': messages_list})

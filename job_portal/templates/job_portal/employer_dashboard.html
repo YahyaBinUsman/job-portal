@@ -1,5 +1,8 @@
+
 <!DOCTYPE html>
 <html>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
+
 <head>
     <title>Employer Dashboard</title>
     <style>
@@ -145,7 +148,7 @@
             <a href="/jobs/">Jobs</a>
         </div>
         <div class="notification-bell" onclick="toggleModal()">
-            <img src="bell_icon.png" alt="Notifications">
+            <i class="fa-regular fa-bell"></i>
             <div class="notification-count">{{ notifications|length }}</div>
         </div>
     </div>
@@ -173,7 +176,7 @@
             <p>Bid Amount: {{ application.bid_count }}</p>
             <a href="{% url 'approve_application' application.id %}">Approve</a>
             <a href="{% url 'reject_application' application.id %}">Reject</a>
-            <a href="{% url 'send_message' application.applicant.id %}">Start Chat</a>
+            <a href="{% url 'send_message' %}">Start Chat</a>
         </div>
         {% endfor %}
     </div>
