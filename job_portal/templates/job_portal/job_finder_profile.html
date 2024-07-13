@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Job Finder Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: #0073e6;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .form-container {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+        }
+
+        .form-group button {
+            background-color: #0073e6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .form-group button:hover {
+            background-color: #005bb5;
+        }
+
+        .profile-display {
+            padding: 30px;
+        }
+
+        .profile-display h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-display .profile-item {
+            margin-bottom: 20px;
+        }
+
+        .profile-display .profile-item label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Job Finder Profile</h1>
+        </div>
+        <div class="form-container" id="profile-form">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="form-group">
+                    <button type="submit">Save Profile</button>
+                </div>
+            </form>
+        </div>
+        <div class="profile-display" id="profile-display" style="display: none;">
+            <h2>Your Profile</h2>
+            <div class="profile-item">
+                <label>Full Name:</label>
+                <p id="profile-full_name"></p>
+            </div>
+            <div class="profile-item">
+                <label>Bio:</label>
+                <p id="profile-bio"></p>
+            </div>
+            <div class="profile-item">
+                <label>Experience:</label>
+                <p id="profile-experience"></p>
+            </div>
+            <div class="profile-item">
+                <label>Skills:</label>
+                <p id="profile-skills"></p>
+            </div>
+            <div class="profile-item">
+                <label>Education:</label>
+                <p id="profile-education"></p>
+            </div>
+            <div class="profile-item">
+                <label>Location:</label>
+                <p id="profile-location"></p>
+            </div>
+            <div class="profile-item">
+                <label>Contact Email:</label>
+                <p id="profile-contact_email"></p>
+            </div>
+            <div class="profile-item">
+                <label>Contact Phone:</label>
+                <p id="profile-contact_phone"></p>
+            </div>
+            <div class="profile-item">
+                <label>LinkedIn Profile:</label>
+                <p id="profile-linkedin_profile"></p>
+            </div>
+            <div class="profile-item">
+                <label>Portfolio URL:</label>
+                <p id="profile-portfolio_url"></p>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const profileForm = document.getElementById('profile-form');
+            const profileDisplay = document.getElementById('profile-display');
+            const profileData = {
+                full_name: '{{ profile.full_name }}',
+                bio: '{{ profile.bio }}',
+                experience: '{{ profile.experience }}',
+                skills: '{{ profile.skills }}',
+                education: '{{ profile.education }}',
+                location: '{{ profile.location }}',
+                contact_email: '{{ profile.contact_email }}',
+                contact_phone: '{{ profile.contact_phone }}',
+                linkedin_profile: '{{ profile.linkedin_profile }}',
+                portfolio_url: '{{ profile.portfolio_url }}'
+            };
+
+            const fields = ['full_name', 'bio', 'experience', 'skills', 'education', 'location', 'contact_email', 'contact_phone', 'linkedin_profile', 'portfolio_url'];
+            
+            let formFilled = true;
+
+            fields.forEach(function (field) {
+                if (!profileData[field]) {
+                    formFilled = false;
+                }
+            });
+
+            if (formFilled) {
+                profileForm.style.display = 'none';
+                profileDisplay.style.display = 'block';
+
+                fields.forEach(function (field) {
+                    document.getElementById('profile-' + field).textContent = profileData[field];
+                });
+            }
+        });
+    </script>
+</body>
+</html>

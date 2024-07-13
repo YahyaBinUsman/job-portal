@@ -3,10 +3,38 @@
 <head>
     <title>Job Finder Dashboard</title>
     <style>
-        /* Internal CSS with Ruby Red and Crystal Blue */
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f8ff;
+        }
+        .navbar {
+            background-color: #1976d2;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+        }
+        .notification-count {
+            background-color: #d32f2f;
+            color: #fff;
+            border-radius: 50%;
+            padding: 5px 10px;
+            position: absolute;
+            top: -10px;
+            right: -10px;
         }
         .container {
             max-width: 1000px;
@@ -18,46 +46,143 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         h2 {
-            color: #d32f2f; /* Ruby Red */
+            color: #d32f2f;
         }
-        p {
-            color: #1976d2; /* Crystal Blue */
+        form {
+            margin-top: 20px;
         }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
+        label {
             display: block;
+            margin-bottom: 5px;
             font-weight: bold;
-            color: #d32f2f; /* Ruby Red */
         }
-        .form-group input, .form-group textarea {
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        textarea {
             width: 100%;
             padding: 10px;
+            margin-bottom: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            font-size: 16px;
         }
-        .form-group input[type="submit"] {
-            background-color: #1976d2; /* Crystal Blue */
+        button {
+            background-color: #1976d2;
             color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #004ba0;
+        }
+        /* Notification Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 10px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
             cursor: pointer;
         }
-        .form-group input[type="submit"]:hover {
-            background-color: #1565c0;
+        .notification-card {
+            background-color: #ffeb3b;
+            border: 1px solid #ffc107;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
         }
     </style>
+    <script>
+        function toggleModal() {
+            var modal = document.getElementById("notificationModal");
+            if (modal.style.display === "block") {
+                modal.style.display = "none";
+            } else {
+                modal.style.display = "block";
+            }
+        }
+        window.onclick = function(event) {
+            var modal = document.getElementById("notificationModal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 </head>
 <body>
+    <div class="navbar">
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Profile</a>
+            <a href="#">Jobs</a>
+        </div>
+        <div class="notification-bell" onclick="toggleModal()">
+            <img src="bell_icon.png" alt="Notifications">
+            <div class="notification-count">{{ notifications|length }}</div>
+        </div>
+    </div>
     <div class="container">
         <h2>Job Finder Dashboard</h2>
-        <p>Welcome, {{ request.user.username }}!</p>
+        {% if not profile_filled %}
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <div class="form-group">
-                <input type="submit" value="Save Profile">
-            </div>
+            <button type="submit">Save</button>
         </form>
+        {% else %}
+        <div class="profile-data">
+            <p>Name: {{ profile.name }}</p>
+            <p>Skills: {{ profile.skills }}</p>
+            <p>Experience: {{ profile.experience }}</p>
+            <!-- Add more fields as needed -->
+        </div>
+        {% endif %}
     </div>
+    <!-- Notification Modal -->
+   <!-- Notification Modal -->
+<div id="notificationModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="toggleModal()">&times;</span>
+        <h2>Notifications</h2>
+        {% for notification in notifications %}
+        <div class="notification-card">
+            <p>{{ notification.message }}</p>
+            <small>{{ notification.timestamp }}</small>
+            {% if "Your bid request was approved" in notification.message %}
+            <a href="{% url 'messaging' %}">Go to Chat</a>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
 </body>
 </html>

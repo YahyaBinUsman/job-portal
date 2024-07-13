@@ -1,16 +1,13 @@
-from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 class CustomUser(AbstractUser):
     is_job_finder = models.BooleanField(default=False)
     is_employer = models.BooleanField(default=False)
-from django.db import models
-from django.contrib.auth.models import AbstractUser
-
-
 
 class JobFinderProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100,default=None)
     full_name = models.CharField(max_length=100, blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
     experience = models.PositiveIntegerField(blank=True, null=True)
@@ -25,7 +22,7 @@ class JobFinderProfile(models.Model):
 class EmployerProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     company_name = models.CharField(max_length=100, blank=True, null=True)
-    company_description = models.TextField(blank=True, null=True,default=None)
+    company_description = models.TextField(blank=True, null=True)
     industry = models.CharField(max_length=100, blank=True, null=True)
     company_location = models.CharField(max_length=100, blank=True, null=True)
     contact_email = models.EmailField(blank=True, null=True)
@@ -51,10 +48,19 @@ class Job(models.Model):
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
-
 class JobApplication(models.Model):
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
     applicant = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     bid_count = models.PositiveIntegerField()
     is_approved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+
+class Notification(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    message = models.CharField(max_length=255)
+    is_read = models.BooleanField(default=False)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+class FriendList(models.Model):
+    user = models.OneToOneField(CustomUser, related_name='friends', on_delete=models.CASCADE)
+    friends = models.ManyToManyField(CustomUser, related_name='friend_of')

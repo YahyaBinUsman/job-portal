@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Messaging</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+        }
+        .container {
+            display: flex;
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar {
+            width: 20%;
+            float: left;
+            border-right: 1px solid #ccc;
+        }
+        .chat-section {
+            width: 80%;
+            float: left;
+        }
+        .message {
+            margin-bottom: 10px;
+        }
+        .message .sender {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Profile</a>
+            <a href="#">Jobs</a>
+        </div>
+       
+    </div>
+    <div class="container">
+        <div class="sidebar">
+            <h3>Chats</h3>
+            {% for friend in friend_messages %}
+            <div class="friend">
+                <p>{{ friend.username }}</p>
+                <a href="{% url 'send_message' friend.id %}">Chat</a>
+                {% if user.is_employer %}
+                <a href="{% url 'hire_job_finder' friend.id %}">Hire</a>
+                {% endif %}
+                <a href="{% url 'job_finder_profile' friend.id %}">View Profile</a>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="chat-section">
+            <h3>Chat with {{ current_friend.username }}</h3>
+            <div class="messages">
+                {% for message in friend_messages.current_friend %}
+                <div class="message">
+                    <span class="sender">{{ message.sender.username }}</span>: {{ message.content }}
+                    <span class="timestamp">{{ message.timestamp }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            <form method="post" action="{% url 'send_message' current_friend.id %}">
+                {% csrf_token %}
+                <textarea name="content" rows="4" cols="50"></textarea>
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+   
+</body>
+</html>
