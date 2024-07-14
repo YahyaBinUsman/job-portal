@@ -5,11 +5,13 @@
     <style>
         /* Internal CSS with Ruby Red and Crystal Blue */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
         }
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 50px auto;
             padding: 20px;
             background-color: #fff;
@@ -19,31 +21,123 @@
         }
         h2 {
             color: #d32f2f; /* Ruby Red */
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .search-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .search-container input, .search-container select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 32%;
+        }
+        .job-listings {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
         .job {
-            padding: 10px;
-            border-bottom: 1px solid #ccc;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .job p {
-            margin: 0;
+        .job-info {
+            flex: 1;
+        }
+        .job-info p {
+            margin: 5px 0;
             color: #1976d2; /* Crystal Blue */
+        }
+        .job-info .label {
+            font-weight: bold;
+            color: #d32f2f; /* Ruby Red */
         }
         .job .timestamp {
             font-size: 0.8em;
             color: #999;
+        }
+        .apply-button {
+            background-color: #d32f2f; /* Ruby Red */
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .apply-button:hover {
+            background-color: #b71c1c;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Job Listings</h2>
-        {% for job in jobs %}
-        <div class="job">
-            <p><strong>{{ job.title }}</strong></p>
-            <p>{{ job.description }}</p>
-            <p class="timestamp">{{ job.created_at }}</p>
+        <div class="search-container">
+            <input type="text" id="search-title" placeholder="Search by job title" onkeyup="filterJobs()">
+            <input type="text" id="search-location" placeholder="Search by location" onkeyup="filterJobs()">
+            <select id="search-salary" onchange="filterJobs()">
+                <option value="">Search by salary</option>
+                <option value="20000">Up to $20,000</option>
+                <option value="50000">Up to $50,000</option>
+                <option value="100000">Up to $100,000</option>
+                <option value="100001">Above $100,000</option>
+            </select>
         </div>
-        {% endfor %}
+        <div class="job-listings" id="job-listings">
+            {% for job in jobs %}
+            <div class="job">
+                <div class="job-info">
+                    <p><span class="label">Title: </span><strong>{{ job.title }}</strong></p>
+                    <p><span class="label">Description: </span>{{ job.description }}</p>
+                    <p><span class="label">Salary: </span>{{ job.salary }}</p>
+                    <p><span class="label">Location: </span>{{ job.location }}</p>
+                    <p class="timestamp">{{ job.created_at }}</p>
+                </div>
+                <a href="{% url 'apply_to_job' job.id %}" class="apply-button">Apply</a>
+            </div>
+            {% endfor %}
+        </div>
     </div>
+
+    <script>
+        function filterJobs() {
+            var title = document.getElementById('search-title').value.toLowerCase();
+            var location = document.getElementById('search-location').value.toLowerCase();
+            var salary = document.getElementById('search-salary').value;
+            var jobs = document.getElementsByClassName('job');
+
+            for (var i = 0; i < jobs.length; i++) {
+                var jobTitle = jobs[i].getElementsByTagName('strong')[0].innerHTML.toLowerCase();
+                var jobDescription = jobs[i].getElementsByTagName('p')[1].innerHTML.toLowerCase();
+                var jobSalary = parseInt(jobs[i].getElementsByTagName('p')[2].innerHTML.replace(/[^0-9]/g, ''));
+                var jobLocation = jobs[i].getElementsByTagName('p')[3].innerHTML.toLowerCase();
+
+                var matchTitle = jobTitle.indexOf(title) > -1 || title === '';
+                var matchLocation = jobLocation.indexOf(location) > -1 || location === '';
+                var matchSalary = salary === '' || 
+                                  (salary === '20000' && jobSalary <= 20000) || 
+                                  (salary === '50000' && jobSalary <= 50000) || 
+                                  (salary === '100000' && jobSalary <= 100000) || 
+                                  (salary === '100001' && jobSalary > 100000);
+
+                if (matchTitle && matchLocation && matchSalary) {
+                    jobs[i].style.display = '';
+                } else {
+                    jobs[i].style.display = 'none';
+                }
+            }
+        }
+    </script>
 </body>
 </html>

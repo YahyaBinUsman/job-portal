@@ -34,7 +34,7 @@ class BidPurchaseForm(forms.Form):
 class JobPostForm(forms.ModelForm):
     class Meta:
         model = Job
-        fields = ['title', 'description']
+        fields = ['title', 'description','location','salary']
 
 class JobApplicationForm(forms.ModelForm):
     class Meta:

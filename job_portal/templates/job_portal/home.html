@@ -1,40 +1,416 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
     <style>
-        /* Internal CSS with Ruby Red and Crystal Blue */
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
         }
-        .container {
-            max-width: 1000px;
-            margin: 50px auto;
+
+        .navbar {
+            background-color: #004ba0;
+            color: #fff;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            margin-right: 20px;
+            transition: color 0.3s;
+        }
+
+        .navbar a:hover {
+            color: #ffeb3b;
+        }
+
+        .sidebar {
+            background-color: #1976d2;
+            color: #fff;
             padding: 20px;
-            background-color: #fff;
-            border: 1px solid #ccc;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            width: 200px;
+            height: 100%;
+            overflow-y: auto;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 15px;
+            transition: background 0.3s, padding-left 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #004ba0;
+            padding-left: 10px;
+        }
+
+        .content {
+            margin-left: 220px;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 40px;
+            background-color: #c0c0c0; /* Shiny Silver */
+            border: 1px solid #aaa;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
         .section {
-            margin-bottom: 30px;
+            margin-bottom: 50px;
+            padding: 40px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
+
+        .section:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
         .section h2 {
             color: #d32f2f; /* Ruby Red */
+            font-size: 32px;
+            margin-bottom: 20px;
         }
+
         .section p {
             color: #1976d2; /* Crystal Blue */
+            font-size: 20px;
+            line-height: 1.6;
         }
+
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #ffeb3b; /* Sea View Blue */
+            border: 1px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            flex: 1;
+            min-width: 250px;
+            max-width: 300px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h3 {
+            color: #004ba0;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .card p {
+            color: #333;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            color: #d32f2f;
+        }
+
+        .faq {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #eee;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .faq:hover {
+            background-color: #ddd;
+        }
+
+        .faq h3 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .faq p {
+            margin: 10px 0 0;
+            font-size: 18px;
+            display: none;
+        }
+
+        .faq.open p {
+            display: block;
+        }
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 500px;
+            margin-top: 20px;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 100%;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            border-color: #004ba0;
+            outline: none;
+        }
+
+        .contact-form button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #004ba0;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .contact-form button:hover {
+            background-color: #003d91;
+        }
+
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to the Job Portal</h1>
-        <div class="section">
-            <h2>Section 1</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum.</p>
+    <div class="navbar">
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Profile</a>
+            <a href="#">Jobs</a>
+            <a href="#">Contact</a>
         </div>
     </div>
+
+    <div class="sidebar">
+        <a href="#section1">Welcome Section</a>
+        <a href="#section2">How to Create an Account</a>
+        <a href="#section3">How to Post a Job</a>
+        <a href="#section4">How to Apply for a Job</a>
+        <a href="#section5">FAQs</a>
+        <a href="#section6">Contact Us</a>
+        <a href="#section7">Features</a>
+        <a href="#section8">Testimonials</a>
+        <a href="#section9">Blog</a>
+        <a href="#section10">About Us</a>
+    </div>
+
+    <div class="content">
+        <div class="container">
+            <h1>Welcome to the Job Portal</h1>
+            <div id="section1" class="section section-large">
+                <h2>Welcome Section</h2>
+                <p>Welcome to our job portal. We are here to help you find your dream job or the perfect candidate for your vacancy. Explore the various features we offer and make the most of our platform. Whether you are a job seeker or an employer, we have tailored solutions for you. Let's get started and achieve your career goals together.</p>
+            </div>
+            <div id="section2" class="section section-large">
+                <h2>How to Create an Account</h2>
+                <div class="cards">
+                    <div class="card">
+                        <i class="fas fa-user-plus icon"></i>
+                        <h3>Step 1</h3>
+                        <p>Click on the sign-up button and fill in your details to create a new account. Ensure you provide accurate information for a smooth verification process. Creating an account is the first step towards accessing all the features of our platform.</p>
+                    </div>
+                    <div class="card">
+                        <i class="fas fa-envelope icon"></i>
+                        <h3>Step 2</h3>
+                        <p>Verify your email address through the link sent to your inbox. This step is crucial to confirm your identity and activate your account. Check your spam folder if you don't see the email in your inbox.</p>
+                    </div>
+                    <div class="card">
+                        <i class="fas fa-check-circle icon"></i>
+                        <h3>Step 3</h3>
+                        <p>Complete your profile by adding relevant information and upload your resume. A well-detailed profile increases your chances of getting noticed by potential employers. Make sure to highlight your skills and experience.</p>
+                    </div>
+                </div>
+            </div>
+            <div id="section3" class="section section-large">
+                <h2>How to Post a Job</h2>
+                <div class="cards">
+                    <div class="card">
+                        <i class="fas fa-briefcase icon"></i>
+                        <h3>Step 1</h3>
+                        <p>Navigate to the 'Post a Job' section and fill in the job details. Provide a clear job title, description, and requirements. This helps job seekers understand what you are looking for and apply accordingly.</p>
+                    </div>
+                    <div class="card">
+                        <i class="fas fa-upload icon"></i>
+                        <h3>Step 2</h3>
+                        <p>Upload the necessary documents and job description. Ensure all required fields are completed to attract the right candidates. Adding relevant documents can provide more insights about the job and the company.</p>
+                    </div>
+                    <div class="card">
+                        <i class="fas fa-check icon"></i>
+                        <h3>Step 3</h3>
+                        <p>Review and publish your job post. Double-check the information to ensure accuracy and completeness. Once published, your job post will be visible to all job seekers on our platform.</p>
+                    </div>
+                </div>
+            </div>
+            <div id="section4" class="section section-large">
+                <h2>How to Apply for a Job</h2>
+                <div class="cards">
+                    <div class="card">
+                        <i class="fas fa-search icon"></i>
+                        <h3>Step 1</h3>
+                        <p>Browse through the job listings and find a position that matches your skills and interests. Use the search filters to narrow down your options and find the most relevant job postings.</p>
+                    </div>
+                    <div class="card">
+                        <i class="fas fa-paper-plane icon"></i>
+                        <h3>Step 2</h3>
+                        <p>Click on the job post to view details and submit your application. Make sure to tailor your resume and cover letter to the job requirements. A customized application increases your chances of getting noticed by employers.</p>
+                    </div>
+                    <div class="card">
+                        <i class="fas fa-thumbs-up icon"></i>
+                        <h3>Step 3</h3>
+                        <p>Follow up with the employer after submitting your application. A polite follow-up message shows your interest and enthusiasm for the position. It can also help you stand out from other applicants.</p>
+                    </div>
+                </div>
+            </div>
+            <div id="section5" class="section section-large">
+                <h2>FAQs</h2>
+                <div class="faq">
+                    <h3>How do I reset my password?</h3>
+                    <p>If you have forgotten your password, click on the 'Forgot Password' link on the login page. Enter your registered email address, and we will send you a link to reset your password. Follow the instructions in the email to set a new password.</p>
+                </div>
+                <div class="faq">
+                    <h3>How can I contact support?</h3>
+                    <p>If you need assistance, you can contact our support team through the 'Contact Us' section. Fill out the contact form with your query, and our team will get back to you as soon as possible. You can also reach us via email or phone.</p>
+                </div>
+                <div class="faq">
+                    <h3>How do I edit my profile?</h3>
+                    <p>To edit your profile, log in to your account and navigate to the 'Profile' section. Click on the 'Edit Profile' button to update your information. Make sure to save the changes after editing your profile.</p>
+                </div>
+                <div class="faq">
+                    <h3>Can I apply for multiple jobs?</h3>
+                    <p>Yes, you can apply for multiple jobs on our platform. We encourage you to apply for positions that match your skills and interests. However, make sure to tailor each application to the specific job requirements.</p>
+                </div>
+                <div class="faq">
+                    <h3>Is my information secure?</h3>
+                    <p>We take the security of your information seriously. Our platform uses advanced security measures to protect your data. Rest assured that your information is safe with us and will not be shared with third parties without your consent.</p>
+                </div>
+            </div>
+            <div id="section6" class="section section-large">
+                <h2>Contact Us</h2>
+                <p>If you have any questions or need assistance, feel free to reach out to us. Fill out the contact form below, and we will get back to you as soon as possible.</p>
+                <form class="contact-form">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                    <textarea rows="5" placeholder="Your Message" required></textarea>
+                    <button type="submit">Send Message</button>
+                </form>
+            </div>
+            <div id="section7" class="section section-large">
+                <h2>Features</h2>
+                <p>Explore the various features our job portal offers to both job seekers and employers. From advanced search filters to personalized job recommendations, we provide tools to enhance your job search experience. Employers can post job listings, review applications, and communicate with potential candidates seamlessly. Our platform is designed to make the hiring process efficient and effective.</p>
+                <div class="cards">
+                    <div class="card">
+                        <i class="fas fa-search icon"></i>
+                        <h3>Advanced Search</h3>
+                        <p>Use our advanced search filters to find jobs that match your criteria. Filter by location, industry, job type, and more to narrow down your search and find the most relevant opportunities.</p>
+                    </div>
+                    <div class="card">
+                        <i class="fas fa-bell icon"></i>
+                        <h3>Job Alerts</h3>
+                        <p>Set up job alerts to receive notifications about new job postings that match your preferences. Stay updated with the latest opportunities and never miss a chance to apply for your dream job.</p>
+                    </div>
+                    <div class="card">
+                        <i class="fas fa-comments icon"></i>
+                        <h3>Messaging</h3>
+                        <p>Communicate with employers directly through our messaging system. Send and receive messages, ask questions, and discuss job details in real-time. Our messaging feature ensures smooth and efficient communication.</p>
+                    </div>
+                </div>
+            </div>
+            <div id="section8" class="section section-large">
+                <h2>Testimonials</h2>
+                <p>Read what our users have to say about their experience with our platform. We value feedback from our users and strive to provide the best possible service. Here are some testimonials from satisfied job seekers and employers who have found success through our job portal.</p>
+                <div class="cards">
+                    <div class="card">
+                        <i class="fas fa-user icon"></i>
+                        <h3>John Doe</h3>
+                        <p>"I found my dream job through this portal. The process was simple, and I received great support from the team. Highly recommend it to anyone looking for a job!"</p>
+                    </div>
+                    <div class="card">
+                        <i class="fas fa-user icon"></i>
+                        <h3>Jane Smith</h3>
+                        <p>"As an employer, I was able to find the perfect candidate for my company. The job posting process was easy, and I received numerous applications from qualified candidates."</p>
+                    </div>
+                    <div class="card">
+                        <i class="fas fa-user icon"></i>
+                        <h3>Michael Johnson</h3>
+                        <p>"The job alerts feature is amazing. I received notifications about new job postings that matched my criteria and applied for several positions. Finally landed a job that I love!"</p>
+                    </div>
+                </div>
+            </div>
+            <div id="section9" class="section section-large">
+                <h2>Blog</h2>
+                <p>Stay updated with the latest news and tips from our blog. We provide valuable insights, career advice, and industry trends to help you stay ahead in your job search. Our blog covers a wide range of topics, from resume writing tips to interview preparation and more. Check out our latest posts and enhance your job search strategy.</p>
+                <div class="cards">
+                    <div class="card">
+                        <i class="fas fa-pen-nib icon"></i>
+                        <h3>Writing a Winning Resume</h3>
+                        <p>Learn how to craft a resume that stands out to employers. Our blog post provides tips and examples to help you create a resume that highlights your skills and experience effectively.</p>
+                    </div>
+                    <div class="card">
+                        <i class="fas fa-users icon"></i>
+                        <h3>Networking Tips</h3>
+                        <p>Discover the importance of networking in your job search. Our blog post offers strategies for building and leveraging your professional network to find job opportunities and advance your career.</p>
+                    </div>
+                    <div class="card">
+                        <i class="fas fa-comments icon"></i>
+                        <h3>Acing the Interview</h3>
+                        <p>Prepare for your next interview with our comprehensive guide. We provide tips on how to answer common interview questions, dress for success, and make a positive impression on potential employers.</p>
+                    </div>
+                </div>
+            </div>
+            <div id="section10" class="section section-large">
+                <h2>About Us</h2>
+                <p>Learn more about our mission, vision, and the team behind this job portal. We are dedicated to connecting job seekers with employers and providing a platform that facilitates the hiring process. Our goal is to make job search and recruitment easier and more efficient for everyone. Meet the team that works tirelessly to bring you the best job portal experience and find out how we can help you achieve your career goals.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.faq').forEach(faq => {
+            faq.addEventListener('click', () => {
+                faq.classList.toggle('open');
+            });
+        });
+    </script>
 </body>
 </html>

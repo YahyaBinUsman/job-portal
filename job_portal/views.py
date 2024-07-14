@@ -234,7 +234,7 @@ def approve_application(request, application_id):
 def reject_application(request, application_id):
     application = JobApplication.objects.get(id=application_id)
     application.delete()
-    return redirect('manage_applications')
+    return redirect('employer_dashboard')
 
 def hire_job_finder(request, job_finder_id):
     job_finder = CustomUser.objects.get(id=job_finder_id)

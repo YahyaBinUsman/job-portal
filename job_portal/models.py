@@ -7,7 +7,7 @@ class CustomUser(AbstractUser):
 
 class JobFinderProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100,default=None)
+    name = models.CharField(max_length=100,default=None,null=True)
     full_name = models.CharField(max_length=100, blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
     experience = models.PositiveIntegerField(blank=True, null=True)
@@ -45,6 +45,8 @@ class Bid(models.Model):
 class Job(models.Model):
     employer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
+    salary = models.BigIntegerField(max_length=200,default=None)
+    location = models.CharField(max_length=200,default=None)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
