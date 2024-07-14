@@ -79,6 +79,7 @@ def employer_dashboard(request):
     profile, created = EmployerProfile.objects.get_or_create(user=request.user)
     notifications = Notification.objects.filter(user=request.user).order_by('-timestamp')
     applications = JobApplication.objects.filter(job__employer=request.user)
+    hired_job_finders = applications.filter(is_approved=True)
     
     if request.method == 'POST':
         form = EmployerProfileForm(request.POST, instance=profile)
@@ -92,6 +93,7 @@ def employer_dashboard(request):
         'form': form,
         'notifications': notifications,
         'applications': applications,
+        'hired_job_finders': hired_job_finders,
         'profile': profile,
     })
 

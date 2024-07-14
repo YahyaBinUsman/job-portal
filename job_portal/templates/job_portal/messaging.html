@@ -9,16 +9,31 @@
             background-color: #f0f8ff;
         }
         .navbar {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 20px;
             background-color: #1976d2;
             color: #fff;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        .nav-links a {
-            margin-right: 20px;
+
+        .navbar .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar a {
             color: #fff;
             text-decoration: none;
+            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            color: #ffeb3b;
         }
         .notification-bell {
             position: relative;
@@ -150,10 +165,15 @@
 <body>
     <div class="navbar">
         <div class="nav-links">
-            <a href="#">Home</a>
-            <a href="#">Profile</a>
-            <a href="#">Jobs</a>
-            <a href="#">Messaging</a>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'job_finder_dashboard' %}">Job Finder Dashboard</a>
+            <a href="{% url 'employer_dashboard' %}">Employer Dashboard</a>
+            <a href="{% url 'messaging' %}">Messaging</a>
+            <a href="{% url 'list_jobs' %}">Jobs</a>
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'signup' %}">Signup</a>
+            <a href="/#section10">About</a>
+            <a href="/#section6">Contact</a>
         </div>
         <div class="notification-bell" onclick="toggleModal()">
             <i class="fa-regular fa-bell"></i>

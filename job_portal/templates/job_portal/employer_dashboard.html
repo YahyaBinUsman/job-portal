@@ -7,31 +7,40 @@
         integrity="sha512-..." crossorigin="anonymous" />
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             background-color: #f0f8ff;
             margin: 0;
             padding: 0;
         }
 
-        .navbar {
-            background-color: #1976d2;
-            color: #fff;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+       
+  .navbar {
+    background-color: #1976d2;
+    color: #fff;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-        .navbar .nav-links {
-            display: flex;
-            gap: 20px;
-        }
+.navbar .nav-links {
+    display: flex;
+    gap: 20px;
+}
 
-        .navbar a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: bold;
-        }
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.navbar a:hover {
+    color: #ffeb3b;
+}
 
         .notification-bell {
             position: relative;
@@ -53,15 +62,15 @@
             margin: 50px auto;
             padding: 20px;
             background-color: #fff;
-            border: 1px solid #ccc;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         h2 {
             color: #1976d2;
             border-bottom: 2px solid #d32f2f;
             padding-bottom: 10px;
+            margin-bottom: 20px;
         }
 
         .profile-data {
@@ -108,53 +117,38 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
+            transition: background-color 0.3s ease;
         }
 
         button:hover {
             background-color: #004ba0;
         }
 
+        .hired-job-finder-card,
         .application-card {
-            background-color: #f1f1f1;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 15px;
-            margin-bottom: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
+        .hired-job-finder-card p,
         .application-card p {
             margin: 5px 0;
+            font-size: 16px;
         }
 
+        .hired-job-finder-card a,
         .application-card a {
             color: #1976d2;
             text-decoration: none;
             margin-right: 10px;
         }
 
+        .hired-job-finder-card a:hover,
         .application-card a:hover {
-            text-decoration: underline;
-        }
-
-        .job-listing {
-            background-color: #e3f2fd;
-            border: 1px solid #90caf9;
-            border-radius: 5px;
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-
-        .job-listing p {
-            margin: 5px 0;
-        }
-
-        .job-listing a {
-            color: #1976d2;
-            text-decoration: none;
-            margin-right: 10px;
-        }
-
-        .job-listing a:hover {
             text-decoration: underline;
         }
 
@@ -208,14 +202,21 @@
 <body>
     <div class="navbar">
         <div class="nav-links">
-            <a href="#">Home</a>
-            <a href="#">Profile</a>
-            <a href="/jobs/">Jobs</a>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'job_finder_dashboard' %}">Job Finder Dashboard</a>
+            <a href="{% url 'employer_dashboard' %}">Employer Dashboard</a>
+            <a href="{% url 'messaging' %}">Messaging</a>
+            <a href="{% url 'list_jobs' %}">Jobs</a>
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'signup' %}">Signup</a>
+            <a href="/#section10">About</a>
+            <a href="/#section6">Contact</a>
         </div>
         <div class="notification-bell" onclick="document.getElementById('notificationModal').style.display='block'">
-            <i class="fa-regular fa-bell"></i>
+            <i class="fas fa-bell"></i>
             <div class="notification-count">{{ notifications|length }}</div>
         </div>
+       
     </div>
     <div class="container">
         <h2>Employer Dashboard</h2>
@@ -241,15 +242,27 @@
             </div>
             {% endif %}
         </div>
-       
+
+        <h3>Hired Job Finders</h3>
+        {% for application in hired_job_finders %}
+        <div class="hired-job-finder-card">
+            <p><span>Job Finder:</span> {{ application.applicant.username }}</p>
+            <p><span>Skills:</span> {{ application.applicant.skills }}</p>
+            <p><span>Experience:</span> {{ application.applicant.experience }}</p>
+            <a href="{% url 'messaging' %}">Message</a>
+            <a href="{% url 'job_finder_profile' application.applicant.id %}">View Profile</a>
+        </div>
+        {% endfor %}
+
         <h3>Job Applications</h3>
         {% for application in applications %}
         <div class="application-card">
             <p><span>Job Finder:</span> {{ application.applicant.username }}</p>
-            <p><span>Bid Amount:</span> {{ application.bid_count }}</p>
+            <p><span>Skills:</span> {{ application.applicant.skills }}</p>
+            <p><span>Experience:</span> {{ application.applicant.experience }}</p>
             <a href="{% url 'approve_application' application.id %}">Approve</a>
             <a href="{% url 'reject_application' application.id %}">Reject</a>
-            <a href="{% url 'send_message' %}">Start Chat</a>
+            <a href="{% url 'messaging' %}">Start Chat</a>
         </div>
         {% endfor %}
     </div>
