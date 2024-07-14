@@ -1,34 +1,43 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Job Finder Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-..." crossorigin="anonymous" />
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
         }
+
         .navbar {
             background-color: #1976d2;
             color: #fff;
-            padding: 10px 20px;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+
         .navbar .nav-links {
             display: flex;
             gap: 20px;
         }
+
         .navbar a {
             color: #fff;
             text-decoration: none;
+            font-weight: bold;
         }
+
         .notification-bell {
             position: relative;
             cursor: pointer;
         }
+
         .notification-count {
             background-color: #d32f2f;
             color: #fff;
@@ -38,8 +47,9 @@
             top: -10px;
             right: -10px;
         }
+
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 50px auto;
             padding: 20px;
             background-color: #fff;
@@ -47,17 +57,37 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
         h2 {
-            color: #d32f2f;
+            color: #1976d2;
+            border-bottom: 2px solid #d32f2f;
+            padding-bottom: 10px;
         }
+
+        .profile-data {
+            margin-bottom: 20px;
+        }
+
+        .profile-data p {
+            font-size: 18px;
+            margin: 5px 0;
+        }
+
+        .profile-data p span {
+            font-weight: bold;
+        }
+
         form {
+            display: none;
             margin-top: 20px;
         }
+
         label {
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
         }
+
         input[type="text"],
         input[type="email"],
         input[type="number"],
@@ -69,6 +99,7 @@
             border-radius: 5px;
             font-size: 16px;
         }
+
         button {
             background-color: #1976d2;
             color: #fff;
@@ -78,9 +109,33 @@
             cursor: pointer;
             font-size: 16px;
         }
+
         button:hover {
             background-color: #004ba0;
         }
+
+        .job-listing {
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .job-listing p {
+            margin: 5px 0;
+        }
+
+        .job-listing a {
+            color: #1976d2;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+
+        .job-listing a:hover {
+            text-decoration: underline;
+        }
+
         /* Notification Modal Styles */
         .modal {
             display: none;
@@ -93,6 +148,7 @@
             overflow: auto;
             background-color: rgba(0, 0, 0, 0.4);
         }
+
         .modal-content {
             background-color: #fefefe;
             margin: 15% auto;
@@ -102,18 +158,21 @@
             max-width: 600px;
             border-radius: 10px;
         }
+
         .close {
             color: #aaa;
             float: right;
             font-size: 28px;
             font-weight: bold;
         }
+
         .close:hover,
         .close:focus {
             color: black;
             text-decoration: none;
             cursor: pointer;
         }
+
         .notification-card {
             background-color: #ffeb3b;
             border: 1px solid #ffc107;
@@ -121,24 +180,35 @@
             padding: 10px;
             margin-bottom: 10px;
         }
+
+        .friend-list {
+            margin-top: 20px;
+        }
+
+        .friend-card {
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .friend-card p {
+            margin: 5px 0;
+        }
+
+        .friend-card a {
+            color: #1976d2;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+
+        .friend-card a:hover {
+            text-decoration: underline;
+        }
     </style>
-    <script>
-        function toggleModal() {
-            var modal = document.getElementById("notificationModal");
-            if (modal.style.display === "block") {
-                modal.style.display = "none";
-            } else {
-                modal.style.display = "block";
-            }
-        }
-        window.onclick = function(event) {
-            var modal = document.getElementById("notificationModal");
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-    </script>
 </head>
+
 <body>
     <div class="navbar">
         <div class="nav-links">
@@ -146,45 +216,59 @@
             <a href="#">Profile</a>
             <a href="#">Jobs</a>
         </div>
-        <div class="notification-bell" onclick="toggleModal()">
+        <div class="notification-bell" onclick="document.getElementById('notificationModal').style.display='block'">
             <i class="fa-regular fa-bell"></i>
             <div class="notification-count">{{ notifications|length }}</div>
         </div>
     </div>
     <div class="container">
         <h2>Job Finder Dashboard</h2>
-        {% if not profile_filled %}
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Save</button>
-        </form>
-        {% else %}
-        <div class="profile-data">
-            <p>Name: {{ profile.name }}</p>
-            <p>Skills: {{ profile.skills }}</p>
-            <p>Experience: {{ profile.experience }}</p>
-            <!-- Add more fields as needed -->
-        </div>
-        {% endif %}
-    </div>
-    <!-- Notification Modal -->
-   <!-- Notification Modal -->
-<div id="notificationModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="toggleModal()">&times;</span>
-        <h2>Notifications</h2>
-        {% for notification in notifications %}
-        <div class="notification-card">
-            <p>{{ notification.message }}</p>
-            <small>{{ notification.timestamp }}</small>
-            {% if "Your bid request was approved" in notification.message %}
-            <a href="{% url 'messaging' %}">Go to Chat</a>
+        <div id="profile-section">
+            {% if form %}
+            <form method="post" id="profile-form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Save</button>
+            </form>
+            <div class="profile-data" id="profile-data">
+                <p><span>Name:</span> {{ profile.name }}</p>
+                <p><span>Full Name:</span> {{ profile.full_name }}</p>
+                <p><span>Bio:</span> {{ profile.bio }}</p>
+                <p><span>Experience:</span> {{ profile.experience }} years</p>
+                <p><span>Skills:</span> {{ profile.skills }}</p>
+                <p><span>Education:</span> {{ profile.education }}</p>
+                <p><span>Location:</span> {{ profile.location }}</p>
+                <p><span>Contact Email:</span> {{ profile.contact_email }}</p>
+                <p><span>Contact Phone:</span> {{ profile.contact_phone }}</p>
+                <p><span>LinkedIn Profile:</span> <a href="{{ profile.linkedin_profile }}" target="_blank">{{ profile.linkedin_profile }}</a></p>
+                <p><span>Portfolio URL:</span> <a href="{{ profile.portfolio_url }}" target="_blank">{{ profile.portfolio_url }}</a></p>
+                <button id="edit-profile-btn">Edit Profile</button>
+            </div>
             {% endif %}
         </div>
-        {% endfor %}
     </div>
-</div>
-
+    <!-- Notification Modal -->
+    <div id="notificationModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="document.getElementById('notificationModal').style.display='none'">&times;</span>
+            <h2>Notifications</h2>
+            {% for notification in notifications %}
+            <div class="notification-card">
+                <p>{{ notification.message }}</p>
+                <small>{{ notification.timestamp }}</small>
+                {% if "chat" in notification.message %}
+                <a href="{% url 'messaging' %}">Go to Chat</a>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+        document.getElementById('edit-profile-btn').addEventListener('click', function () {
+            document.getElementById('profile-form').style.display = 'block';
+            document.getElementById('profile-data').style.display = 'none';
+        });
+    </script>
 </body>
+
 </html>

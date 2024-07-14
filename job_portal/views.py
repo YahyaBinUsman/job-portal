@@ -55,6 +55,7 @@ from .forms import JobFinderProfileForm, EmployerProfileForm
 def job_finder_dashboard(request):
     profile, created = JobFinderProfile.objects.get_or_create(user=request.user)
     notifications = Notification.objects.filter(user=request.user).order_by('-timestamp')
+    jobs = Job.objects.all()  # Add this to fetch job listings
     
     if request.method == 'POST':
         form = JobFinderProfileForm(request.POST, instance=profile)
@@ -71,8 +72,8 @@ def job_finder_dashboard(request):
         'notifications': notifications,
         'profile': profile,
         'profile_filled': profile_filled,
+        'jobs': jobs,  # Add this to pass job listings to the template
     })
-
 
 def employer_dashboard(request):
     profile, created = EmployerProfile.objects.get_or_create(user=request.user)
@@ -91,6 +92,7 @@ def employer_dashboard(request):
         'form': form,
         'notifications': notifications,
         'applications': applications,
+        'profile': profile,
     })
 
 from django.http import JsonResponse
