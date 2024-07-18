@@ -5,105 +5,146 @@
     <style>
         /* Internal CSS with Ruby Red and Crystal Blue */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f8ff;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #350f0f 25%, #500909 75%);
+            color: #f0f0f0;
             margin: 0;
             padding: 0;
         }
+
         .navbar {
-            background-color: #1976d2;
-            color: #fff;
-            padding: 15px 20px;
+            background: rgba(51, 51, 51, 0.9);
+            backdrop-filter: blur(10px);
+            color: #ff6f61;
+            padding: 20px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
         }
 
         .navbar .nav-links {
             display: flex;
-            gap: 20px;
+            gap: 25px;
         }
 
         .navbar a {
-            color: #fff;
+            background: linear-gradient(135deg, #350f0f 25%, #500909 75%);
             text-decoration: none;
-            font-weight: bold;
-            padding: 10px 15px;
-            border-radius: 5px;
+            font-weight: 600;
+            padding: 15px 20px;
+            border-radius: 8px;
             transition: background-color 0.3s ease;
+            font-size: 1.2em;
+            color: #f0f0f0;
         }
 
         .navbar a:hover {
-            color: #ffeb3b;
+            background-color: #ff6f61;
+            color: #fff;
         }
+
         .container {
-            max-width: 1200px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 1400px;
+            margin: 80px auto;
+            padding: 50px;
+            background-color: #333;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
         }
+
         h2 {
-            color: #d32f2f; /* Ruby Red */
+            color: #ff6f61; /* Ruby Red */
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            font-size: 2.5em;
         }
+
         .search-container {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
-        .search-container input, .search-container select {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+
+        .search-container input, 
+        .search-container select {
+            padding: 15px;
+            border: 2px solid #ff6f61;
+            border-radius: 8px;
             width: 32%;
+            background-color: #444;
+            color: #f0f0f0;
+            font-size: 1.3em;
+            transition: border-color 0.3s;
         }
+
+        .search-container input:focus, 
+        .search-container select:focus {
+            border-color: #ff6f61;
+        }
+
         .job-listings {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
         }
+
         .job {
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            background-color: #f9f9f9;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background: linear-gradient(135deg, #2d1f1f 25%, #4c2828 75%);
+            border: 1px solid  #991111;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
         }
+
+        .job:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+        }
+
         .job-info {
             flex: 1;
+            color: #f0f0f0;
         }
+
         .job-info p {
-            margin: 5px 0;
-            color: #1976d2; /* Crystal Blue */
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ff6f61;
+            padding-bottom: 10px;
         }
+
         .job-info .label {
             font-weight: bold;
-            color: #d32f2f; /* Ruby Red */
+            color: #ff6f61; /* Ruby Red */
+            font-size: 1.3em;
         }
+
         .job .timestamp {
-            font-size: 0.8em;
+            font-size: 1em;
             color: #999;
         }
+
         .apply-button {
-            background-color: #d32f2f; /* Ruby Red */
+            background-color: #ff6f61; /* Ruby Red */
             color: #fff;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            padding: 15px 30px;
+            border-radius: 8px;
             cursor: pointer;
             text-decoration: none;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 1.3em;
         }
+
         .apply-button:hover {
             background-color: #b71c1c;
+            transform: scale(1.05);
         }
     </style>
 </head>
@@ -138,12 +179,13 @@
             {% for job in jobs %}
             <div class="job">
                 <div class="job-info">
-                    <p><span class="label">Title: </span><strong>{{ job.title }}</strong></p>
-                    <p><span class="label">Description: </span>{{ job.description }}</p>
-                    <p><span class="label">Salary: </span>{{ job.salary }}</p>
-                    <p><span class="label">Location: </span>{{ job.location }}</p>
+                    <p><span class="label">Title:</span> <strong>{{ job.title }}</strong></p>
+                    <p><span class="label">Description:</span> {{ job.description }}</p>
+                    <p><span class="label">Salary:</span> {{ job.salary }}</p>
+                    <p><span class="label">Location:</span> {{ job.location }}</p>
                     <p class="timestamp">{{ job.created_at }}</p>
                 </div>
+                <br>
                 <a href="{% url 'apply_to_job' job.id %}" class="apply-button">Apply</a>
             </div>
             {% endfor %}

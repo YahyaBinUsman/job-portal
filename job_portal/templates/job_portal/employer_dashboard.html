@@ -1,178 +1,314 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employer Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-        integrity="sha512-..." crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f8ff;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #350f0f 25%, #500909 75%);
+            color: #f0f0f0;
             margin: 0;
             padding: 0;
+            transition: all 0.3s ease-in-out;
         }
 
-       
-  .navbar {
-    background-color: #1976d2;
-    color: #fff;
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+        .navbar {
+            background: rgba(51, 51, 51, 0.9);
+            backdrop-filter: blur(10px);
+            color: #ff6f61;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
 
-.navbar .nav-links {
-    display: flex;
-    gap: 20px;
-}
+        .navbar .nav-links {
+            display: flex;
+            gap: 25px;
+        }
 
-.navbar a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-    padding: 10px 15px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
+        .navbar a {
+            background: linear-gradient(135deg, #350f0f 25%, #500909 75%);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 15px 20px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+            font-size: 1.2em;
+            color: #f0f0f0;
+        }
 
-.navbar a:hover {
-    color: #ffeb3b;
-}
+        .navbar a:hover {
+            background-color: #ff6f61;
+            color: #fff;
+        }
 
         .notification-bell {
             position: relative;
             cursor: pointer;
         }
 
+        .notification-bell .fas {
+            font-size: 1.5em;
+        }
+
         .notification-count {
-            background-color: #d32f2f;
-            color: #fff;
-            border-radius: 50%;
-            padding: 5px 10px;
             position: absolute;
-            top: -10px;
+            top: -5px;
             right: -10px;
+            background: #ff6f61;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 50%;
+            font-size: 0.9em;
         }
 
         .container {
-            max-width: 1200px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 50px;
+            background-color: #333;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+            padding-top: 100px;
         }
 
-        h2 {
-            color: #1976d2;
-            border-bottom: 2px solid #d32f2f;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
+        h2,
+        h3 {
+            color: #ff6f61;
+            font-size: 2.5em;
+            margin-bottom: 25px;
         }
 
-        .profile-data {
+        .card {
+            background: linear-gradient(135deg, #350f0f 25%, #500909 75%);
+            border: 1px solid  #500909;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
             margin-bottom: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+        }
+
+        .card p {
+            color: #e0e0e0;
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+
+        .card span {
+            font-weight: bold;
+            color: #ff6f61;
+            display: block;
+            font-size: 1.2em;
+            margin-bottom: 5px;
+        }
+
+        .card a {
+            color: #ff6f61;
+            background: linear-gradient(135deg, #350f0f 25%, #500909 75%);
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            transition: background 0.3s, padding-left 0.3s;
+            font-size: 1.2em;
+        }
+
+        .card a:hover {
+            background-color: #555;
+            padding-left: 25px;
         }
 
         .profile-data p {
-            font-size: 18px;
-            margin: 5px 0;
+            font-size: 1.1em;
         }
 
-        .profile-data p span {
-            font-weight: bold;
-        }
-
-        form {
+        #profile-form {
             display: none;
-            margin-top: 20px;
+        }
+
+        #profile-data {
+            display: block;
+        }
+
+        .profile-data {
+            background: linear-gradient(135deg, #2d1f1f 25%, #4c2828 75%);
+            border: 1px solid  #991111;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .profile-data h3 {
+            font-size: 1.8em;
+            color: #ff6f61;
+            margin-bottom: 15px;
+        }
+
+        .profile-data p {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ff6f61;
+            padding-bottom: 10px;
+        }
+
+        .profile-data span {
+            font-weight: bold;
+            color: #ff6f61;
+            display: block;
+            font-size: 1.3em;
+            margin-bottom: 5px;
+        }
+
+        .profile-data a {
+            color: #ff6f61;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .profile-data a:hover {
+            color: #fff;
+        }
+
+        .profile-data button {
+            background: linear-gradient(135deg, #350f0f 25%, #500909 75%);
+            color: #f0f0f0;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .profile-data button:hover {
+            background-color: #ff6f61;
+            color: #fff;
+        }
+        .profile-data a {
+            background: linear-gradient(135deg, #350f0f 25%, #500909 75%);
+            color: #f0f0f0;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .profile-data a:hover {
+            background-color: #ff6f61;
+            color: #fff;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 2px solid #ff6f61;
+            border-radius: 8px;
+            background-color: #444;
+            color: #f0f0f0;
+            font-size: 1.3em;
+            transition: border-color 0.3s;
         }
 
         label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+            font-size: x-large;
+            color: #ff6f61;
         }
 
-        input[type="text"],
-        input[type="email"],
-        input[type="number"],
-        textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #ff6f61;
         }
 
-        button {
-            background-color: #1976d2;
-            color: #fff;
-            padding: 10px 20px;
+        button[type="submit"] {
+            background: linear-gradient(135deg, #350f0f 25%, #500909 75%);
+            color: #f0f0f0;
+            padding: 15px 30px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s, transform 0.3s;
         }
 
-        button:hover {
-            background-color: #004ba0;
+        button[type="submit"]:hover {
+            background-color: #ff6f61;
+            color: #fff;
+            transform: scale(1.05);
         }
 
-        .hired-job-finder-card,
-        .application-card {
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .hired-job-finder-card p,
-        .application-card p {
-            margin: 5px 0;
-            font-size: 16px;
-        }
-
-        .hired-job-finder-card a,
-        .application-card a {
-            color: #1976d2;
-            text-decoration: none;
-            margin-right: 10px;
-        }
-
-        .hired-job-finder-card a:hover,
-        .application-card a:hover {
-            text-decoration: underline;
-        }
-
-        /* Notification Modal Styles */
         .modal {
             display: none;
             position: fixed;
-            z-index: 1;
+            z-index: 1001;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
+            background-color: rgba(0, 0, 0, 0.7);
         }
 
         .modal-content {
-            background-color: #fefefe;
+            background-color: #333;
             margin: 15% auto;
             padding: 20px;
             border: 1px solid #888;
             width: 80%;
-            max-width: 600px;
-            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content h2 {
+            font-size: 2em;
+        }
+
+        .modal-content .notification-card {
+            background-color: #444;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .modal-content .notification-card p {
+            font-size: 1.1em;
+            color: #f0f0f0;
+        }
+
+        .modal-content .notification-card small {
+            display: block;
+            margin-top: 5px;
+            font-size: 0.9em;
+            color: #888;
+        }
+
+        .modal-content .notification-card a {
+            display: block;
+            margin-top: 5px;
+            font-size: 1em;
+            color: #ff6f61;
+            text-decoration: none;
         }
 
         .close {
@@ -184,17 +320,9 @@
 
         .close:hover,
         .close:focus {
-            color: black;
+            color: #fff;
             text-decoration: none;
             cursor: pointer;
-        }
-
-        .notification-card {
-            background-color: #ffeb3b;
-            border: 1px solid #ffc107;
-            border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -211,12 +339,12 @@
             <a href="{% url 'signup' %}">Signup</a>
             <a href="/#section10">About</a>
             <a href="/#section6">Contact</a>
-        </div>
         <div class="notification-bell" onclick="document.getElementById('notificationModal').style.display='block'">
-            <i class="fas fa-bell"></i>
+            <i class="fa-regular fa-bell"></i>
             <div class="notification-count">{{ notifications|length }}</div>
         </div>
-       
+    </div>
+
     </div>
     <div class="container">
         <h2>Employer Dashboard</h2>
@@ -234,38 +362,53 @@
                 <p><span>Location:</span> {{ profile.company_location }}</p>
                 <p><span>Contact Email:</span> {{ profile.contact_email }}</p>
                 <p><span>Contact Phone:</span> {{ profile.contact_phone }}</p>
-                <p><span>Company Website:</span> <a href="{{ profile.company_website }}" target="_blank">{{ profile.company_website }}</a></p>
-                <p><span>LinkedIn Profile:</span> <a href="{{ profile.linkedin_profile }}" target="_blank">{{ profile.linkedin_profile }}</a></p>
+                <p><span>Company Website:</span> <br><a href="{{ profile.company_website }}" target="_blank">{{ profile.company_website }}</a></p>
+                <p><span>LinkedIn Profile:</span> <br><a href="{{ profile.linkedin_profile }}" target="_blank">{{ profile.linkedin_profile }}</a></p>
                 <p><span>Number of Employees:</span> {{ profile.number_of_employees }}</p>
                 <p><span>Established Year:</span> {{ profile.established_year }}</p>
                 <button id="edit-profile-btn">Edit Profile</button>
             </div>
             {% endif %}
         </div>
-
         <h3>Hired Job Finders</h3>
         {% for application in hired_job_finders %}
-        <div class="hired-job-finder-card">
-            <p><span>Job Finder:</span> {{ application.applicant.username }}</p>
-            <p><span>Skills:</span> {{ application.applicant.skills }}</p>
-            <p><span>Experience:</span> {{ application.applicant.experience }}</p>
-            <a href="{% url 'messaging' %}">Message</a>
-            <a href="{% url 'job_finder_profile' application.applicant.id %}">View Profile</a>
+        <div class="profile-data">
+            <div>
+                <p><span>Employee:</span> {{ application.applicant.username }}</p>
+                <p><span>Skills:</span> {{ application.applicant.jobfinderprofile.skills }}</p>
+                <p><span>Experience:</span> {{ application.applicant.jobfinderprofile.experience }} years</p>
+                <p><span>Bid Amount:</span> {{ application.bid_count }} bids</p>
+                <p><span>Phone:</span> {{ application.applicant.jobfinderprofile.contact_phone }}</p>
+            </div>
+            <br>
+            <div>
+                <a href="{% url 'messaging' %}">Message</a>
+                <a href="{% url 'job_finder_profile' application.applicant.id %}">View Profile</a>
+            </div>
         </div>
         {% endfor %}
 
         <h3>Job Applications</h3>
         {% for application in applications %}
-        <div class="application-card">
-            <p><span>Job Finder:</span> {{ application.applicant.username }}</p>
-            <p><span>Skills:</span> {{ application.applicant.skills }}</p>
-            <p><span>Experience:</span> {{ application.applicant.experience }}</p>
-            <a href="{% url 'approve_application' application.id %}">Approve</a>
-            <a href="{% url 'reject_application' application.id %}">Reject</a>
-            <a href="{% url 'messaging' %}">Start Chat</a>
+        <div class="profile-data">
+            <div>
+                <p><span>Job Finder:</span> {{ application.applicant.username }}</p>
+                <p><span>Skills:</span> {{ application.applicant.jobfinderprofile.skills }}</p>
+                <p><span>Experience:</span> {{ application.applicant.jobfinderprofile.experience }} years</p>
+                <p><span>Phone:</span> {{ application.applicant.jobfinderprofile.contact_phone }}</p>
+                <p><span>Bid Amount:</span> {{ application.bid_count }} bids</p>
+            </div>
+            <br>
+            <div>
+                <a href="{% url 'approve_application' application.id %}">Accept</a>
+                <a href="{% url 'reject_application' application.id %}">Reject</a>
+                <a href="{% url 'job_finder_profile' application.applicant.id %}">View Profile</a>
+                <a href="{% url 'messaging' %}">Message</a>
+            </div>
         </div>
         {% endfor %}
     </div>
+
     <!-- Notification Modal -->
     <div id="notificationModal" class="modal">
         <div class="modal-content">
@@ -282,11 +425,17 @@
             {% endfor %}
         </div>
     </div>
+
     <script>
-        document.getElementById('edit-profile-btn').addEventListener('click', function () {
+        document.getElementById('edit-profile-btn').addEventListener('click', function() {
             document.getElementById('profile-form').style.display = 'block';
             document.getElementById('profile-data').style.display = 'none';
         });
+
+        function toggleModal() {
+            var modal = document.getElementById('notificationModal');
+            modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
+        }
     </script>
 </body>
 

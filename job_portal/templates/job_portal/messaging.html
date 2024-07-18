@@ -3,164 +3,270 @@
 <head>
     <title>Messaging</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f8ff;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #350f0f 25%, #500909 75%);
+            color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            transition: all 0.3s ease-in-out;
         }
+
         .navbar {
-            background-color: #1976d2;
-            color: #fff;
-            padding: 15px 20px;
+            background: rgba(51, 51, 51, 0.9);
+            backdrop-filter: blur(10px);
+            color: #ff6f61;
+            padding: 20px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
         }
 
         .navbar .nav-links {
             display: flex;
-            gap: 20px;
+            gap: 25px;
         }
 
         .navbar a {
-            color: #fff;
+            background: linear-gradient(135deg, #350f0f 25%, #500909 75%);
             text-decoration: none;
-            font-weight: bold;
-            padding: 10px 15px;
-            border-radius: 5px;
+            font-weight: 600;
+            padding: 15px 20px;
+            border-radius: 8px;
             transition: background-color 0.3s ease;
+            font-size: 1.2em;
+            color: #f0f0f0;
         }
 
         .navbar a:hover {
-            color: #ffeb3b;
+            background-color: #ff6f61;
+            color: #fff;
         }
+
         .notification-bell {
             position: relative;
             cursor: pointer;
         }
+
+        .notification-bell .fa-bell {
+            font-size: 1.5em;
+        }
+
         .notification-count {
             position: absolute;
-            top: 0;
-            right: 0;
-            background-color: red;
-            color: white;
-            border-radius: 50%;
+            top: -10px;
+            right: -10px;
+            background: #ff6f61;
+            color: #fff;
             padding: 5px 10px;
-            font-size: 12px;
+            border-radius: 50%;
+            font-size: 0.8em;
         }
+
         .container {
             display: flex;
-            max-width: 1200px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding-top: 80px;
+            max-width: 1400px;
+            margin: 0 auto;
         }
+
         .sidebar {
-            width: 25%;
-            border-right: 1px solid #ccc;
-            padding-right: 20px;
+            background: linear-gradient(180deg, #222, #444);
+            color: #ff6f61;
+            padding: 30px;
+            width: 300px;
+            height: calc(100vh - 80px);
+            overflow-y: auto;
+            box-shadow: 2px 0 15px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            top: 80px;
+            left: 0;
         }
-        .chat-section {
-            width: 75%;
-            padding-left: 20px;
+
+        .sidebar h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.5em;
         }
+
         .friend {
-            padding: 10px;
-            border-bottom: 1px solid #ccc;
-            cursor: pointer;
+            margin-bottom: 20px;
         }
-        .friend:hover {
-            background-color: #f1f1f1;
+
+        .friend a {
+            color: #f0f0f0;
+            background: linear-gradient(135deg, #350f0f 25%, #500909 75%);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            transition: background 0.3s, padding-left 0.3s;
+            font-size: 1.1em;
         }
+
+        .friend a:hover {
+            background-color: #555;
+            padding-left: 25px;
+        }
+
+        .friend-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .friend-actions a {
+            font-size: 0.9em;
+            padding: 10px 15px;
+        }
+
+        .content {
+            margin-left: 330px;
+            padding: 30px;
+            padding-top: 100px;
+            flex-grow: 1;
+        }
+
+        .chat-section {
+            background: #444;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
         .chat-box {
             display: none;
         }
+
         .messages {
+            background: #222;
+            padding: 15px;
+            border-radius: 10px;
             height: 400px;
-            overflow-y: scroll;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #e3f2fd;
-            display: flex;
-            flex-direction: column;
+            overflow-y: auto;
+            margin-bottom: 20px;
         }
+
         .message {
             padding: 10px;
+            border-radius: 10px;
             margin-bottom: 10px;
-            border-radius: 5px;
-            max-width: 60%;
-            word-wrap: break-word;
+            height: 40px;
+
         }
+
         .message.sent {
-            background-color: #d1c4e9;
-            align-self: flex-end;
+            background: #500909;
+            text-align: right;
         }
+
         .message.received {
-            background-color: #bbdefb;
-            align-self: flex-start;
+            background: #350f0f;
         }
-        form {
+
+        .message-form {
             display: flex;
-            margin-top: 10px;
+            gap: 10px;
         }
-        input[type="text"] {
-            flex: 1;
+
+        .message-form input[type="text"] {
+            flex-grow: 1;
             padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-right: 10px;
-        }
-        button {
-            background-color: #1976d2;
+            border: none;
+            border-radius: 10px;
+            background: #222;
             color: #fff;
+        }
+
+        .message-form button {
             padding: 10px 20px;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
+            background: #ff6f61;
+            color: #fff;
             cursor: pointer;
-            font-size: 16px;
+            transition: background-color 0.3s;
         }
-        button:hover {
-            background-color: #004ba0;
+
+        .message-form button:hover {
+            background-color: #9932cc;
         }
+
         .modal {
             display: none;
             position: fixed;
-            z-index: 1;
+            z-index: 1001;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgb(0, 0, 0);
-            background-color: rgba(0, 0, 0, 0.4);
-            padding-top: 60px;
+            background-color: rgba(0, 0, 0, 0.7);
         }
+
         .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
+            background-color: #333;
+            margin: 15% auto;
             padding: 20px;
             border: 1px solid #888;
             width: 80%;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
         }
+
+        .modal-content h2 {
+            font-size: 2em;
+        }
+
+        .modal-content .notification-card {
+            background-color: #444;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .modal-content .notification-card p {
+            font-size: 1.1em;
+            color: #f0f0f0;
+        }
+
+        .modal-content .notification-card small {
+            display: block;
+            margin-top: 5px;
+            font-size: 0.9em;
+            color: #888;
+        }
+
+        .modal-content .notification-card a {
+            display: block;
+            margin-top: 5px;
+            font-size: 1em;
+            color: #ff6f61;
+            text-decoration: none;
+        }
+
         .close {
             color: #aaa;
             float: right;
             font-size: 28px;
             font-weight: bold;
         }
+
         .close:hover,
         .close:focus {
-            color: black;
+            color: #fff;
             text-decoration: none;
             cursor: pointer;
         }
     </style>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <div class="navbar">
@@ -174,47 +280,50 @@
             <a href="{% url 'signup' %}">Signup</a>
             <a href="/#section10">About</a>
             <a href="/#section6">Contact</a>
-        </div>
+        
         <div class="notification-bell" onclick="toggleModal()">
-            <i class="fa-regular fa-bell"></i>
             <div class="notification-count">{{ notifications|length }}</div>
         </div>
+    </div>
     </div>
     <div class="container">
         <div class="sidebar">
             <h3>Chats</h3>
             {% for friend, messages in friend_messages.items %}
             <div class="friend">
-                <a class="friend-link" data-id="{{ friend.id }}">{{ friend.username }}</a><br>
-                {% if user.is_employer %}
-                <a href="{% url 'hire_job_finder' friend.id %}">Hire</a>
-                <a href="{% url 'job_finder_profile' friend.id %}">View Profile</a>
-                {% endif %}
+                <a class="friend-link" data-id="{{ friend.id }}">{{ friend.username }}</a>
+                <div class="friend-actions">
+                    {% if user.is_employer %}
+                    <a href="{% url 'hire_job_finder' friend.id %}" class="action-btn">Hire</a>
+                    <a href="{% url 'job_finder_profile' friend.id %}" class="action-btn">View Profile</a>
+                    {% endif %}
+                </div>
             </div>
             {% endfor %}
         </div>
-        <div class="chat-section">
-            {% for friend, messages in friend_messages.items %}
-            <div class="chat-box" id="chat-box-{{ friend.id }}">
-                <h3>Chat with {{ friend.username }}</h3>
-                <div class="messages" id="messages-{{ friend.id }}">
-                    {% for message in messages %}
-                    <div class="message {% if message.sender == request.user %}sent{% else %}received{% endif %}">
-                        {{ message.content }}
+        <div class="content">
+            <div class="chat-section">
+                {% for friend, messages in friend_messages.items %}
+                <div class="chat-box" id="chat-box-{{ friend.id }}">
+                    <h3>Chat with {{ friend.username }}</h3>
+                    <div class="messages" id="messages-{{ friend.id }}">
+                        {% for message in messages %}
+                        <div class="message {% if message.sender == request.user %}sent{% else %}received{% endif %}">
+                            {{ message.content }}
+                        </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
+                    <form class="message-form" data-receiver-id="{{ friend.id }}">
+                        {% csrf_token %}
+                        <input type="text" name="content" placeholder="Type a message..." required>
+                        <button type="submit">Send</button>
+                    </form>
                 </div>
-                <form class="message-form" data-receiver-id="{{ friend.id }}">
-                    {% csrf_token %}
-                    <input type="text" name="content" placeholder="Type a message..." required>
-                    <button type="submit">Send</button>
-                </form>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
     </div>
 
-    <!-- Notification Modal -->
     <div id="notificationModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="toggleModal()">&times;</span>
@@ -223,9 +332,6 @@
             <div class="notification-card">
                 <p>{{ notification.message }}</p>
                 <small>{{ notification.timestamp }}</small>
-                {% if "chat" in notification.message %}
-                <a href="{% url 'messaging' %}">Go to Chat</a>
-                {% endif %}
             </div>
             {% endfor %}
         </div>
@@ -291,13 +397,12 @@
                 element.scrollTop(element[0].scrollHeight);
             }
 
-            setInterval(fetchMessages, 5000);  // Poll every 5 seconds
-
             window.toggleModal = function() {
                 var modal = document.getElementById("notificationModal");
                 modal.style.display = modal.style.display === "block" ? "none" : "block";
             };
         });
+        setInterval(fetchMessages, 5000);  // Poll every 5 seconds
     </script>
 </body>
 </html>

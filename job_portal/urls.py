@@ -23,7 +23,7 @@ urlpatterns = [
     path('notifications/', notifications, name='notifications'),
     path('hire_job_finder/<int:job_finder_id>/', hire_job_finder, name='hire_job_finder'),
     path('job_finder_profile/<int:job_finder_id>/', job_finder_profile, name='job_finder_profile'),
-        path('fetch_messages/', fetch_messages, name='fetch_messages'),
+    path('fetch_messages/', fetch_messages, name='fetch_messages'),
 
 
 
